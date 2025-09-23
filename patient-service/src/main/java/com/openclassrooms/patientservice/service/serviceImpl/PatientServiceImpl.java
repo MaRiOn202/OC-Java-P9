@@ -130,12 +130,10 @@ public class PatientServiceImpl implements PatientService {
     public void deletePatient(Long id) {
 
         log.info("Suppression du patient avec l'id : {}", id);
-        PatientEntity noteEntity = patientRepository.findById(id)
-                .orElseThrow(() -> new PatientNotFoundException("Note non trouvée avec l'id " + id));
+        PatientEntity patientEntity = patientRepository.findById(id)
+                .orElseThrow(() -> new PatientNotFoundException("Patient non trouvé avec l'id " + id));
 
-    /*   if (!patientRepository.existsById(id)) {
-            throw new PatientNotFoundException("Patient non trouvé avec l'id " + id);
-        }*/
+        log.info("Suppression du patient : {}", patientEntity);
 
         patientRepository.deleteById(id);
         log.info("Le patient a bien été supprimé");
