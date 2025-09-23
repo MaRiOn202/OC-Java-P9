@@ -10,7 +10,6 @@ import com.openclassrooms.patientservice.repository.PatientRepository;
 import com.openclassrooms.patientservice.service.PatientService;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -131,10 +130,12 @@ public class PatientServiceImpl implements PatientService {
     public void deletePatient(Long id) {
 
         log.info("Suppression du patient avec l'id : {}", id);
+        PatientEntity noteEntity = patientRepository.findById(id)
+                .orElseThrow(() -> new PatientNotFoundException("Note non trouvée avec l'id " + id));
 
-       if (!patientRepository.existsById(id)) {
+    /*   if (!patientRepository.existsById(id)) {
             throw new PatientNotFoundException("Patient non trouvé avec l'id " + id);
-        }
+        }*/
 
         patientRepository.deleteById(id);
         log.info("Le patient a bien été supprimé");

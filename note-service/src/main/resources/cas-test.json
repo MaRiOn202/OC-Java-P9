@@ -1,0 +1,47 @@
+[
+  {
+    "patientId": 1,
+    "contenuNote": "Le patient déclare qu'il se sent très bien. Poids égal ou inférieur au poids recommandé",
+    "dateCreation": "2025-09-23T10:00:00"
+  },
+  {
+    "patientId": 2,
+    "contenuNote": "Le patient déclare qu'il ressent beaucoup de stress au travail. Il se plaint également que son audition est anormale dernièrement",
+    "dateCreation": "2025-09-23T10:05:00"
+  },
+  {
+    "patientId": 2,
+    "contenuNote": "Le patient déclare avoir fait une réaction aux médicaments au cours des 3 derniers mois. Il remarque également que son audition continue d'être anormale",
+    "dateCreation": "2025-09-23T10:10:00"
+  },
+  {
+    "patientId": 3,
+    "contenuNote": "Le patient déclare qu'il fume depuis peu",
+    "dateCreation": "2025-09-23T10:15:00"
+  },
+  {
+    "patientId": 3,
+    "contenuNote": "Le patient déclare qu'il est fumeur et qu'il a cessé de fumer l'année dernière. Il se plaint également de crises d’apnée respiratoire anormales. Tests de laboratoire indiquant un taux de cholestérol LDL élevé",
+    "dateCreation": "2025-09-23T10:20:00"
+  },
+  {
+    "patientId": 4,
+    "contenuNote": "Le patient déclare qu'il lui est devenu difficile de monter les escaliers. Il se plaint également d’être essoufflé. Tests de laboratoire indiquant que les anticorps sont élevés. Réaction aux médicaments",
+    "dateCreation": "2025-09-23T10:25:00"
+  },
+  {
+    "patientId": 4,
+    "contenuNote": "Le patient déclare qu'il a mal au dos lorsqu'il reste assis pendant longtemps",
+    "dateCreation": "2025-09-23T10:30:00"
+  },
+  {
+    "patientId": 4,
+    "contenuNote": "Le patient déclare avoir commencé à fumer depuis peu. Hémoglobine A1C supérieure au niveau recommandé",
+    "dateCreation": "2025-09-23T10:35:00"
+  },
+  {
+    "patientId": 4,
+    "contenuNote": "Taille, Poids, Cholestérol, Vertige et Réaction",
+    "dateCreation": "2025-09-23T10:40:00"
+  }
+]
