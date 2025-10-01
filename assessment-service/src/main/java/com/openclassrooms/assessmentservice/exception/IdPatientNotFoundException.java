@@ -1,6 +1,10 @@
-package com.openclassrooms.patientservice.exception;
+package com.openclassrooms.assessmentservice.exception;
+
+
+
 
 public class IdPatientNotFoundException extends RuntimeException {
+
 
     public IdPatientNotFoundException(String message) {
 
@@ -13,7 +17,6 @@ public class IdPatientNotFoundException extends RuntimeException {
         super(message, cause);
 
     }
-
 
 
 
