@@ -79,7 +79,6 @@ public class NoteController {
 
         if (notesDtoList.isEmpty()) {
             log.info("Pas de note trouvée pour le patientId suivant : {}", patientId);
-            return ResponseEntity.noContent().build();
         }
 
         return ResponseEntity.ok(notesDtoList);

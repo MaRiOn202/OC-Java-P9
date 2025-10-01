@@ -1,5 +1,4 @@
-package com.openclassrooms.noteservice.exception;
-
+package com.openclassrooms.assessmentservice.exception;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -12,12 +11,13 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 
 import java.time.LocalDateTime;
 
+
 @Slf4j
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    private ResponseEntity<ConfigError> errorResponse(Exception e, HttpStatus status, HttpServletRequest request) {
 
+    private ResponseEntity<ConfigError> errorResponse(Exception e, HttpStatus status, HttpServletRequest request) {
 
         ConfigError error = ConfigError.builder()
                 .localDateTime(LocalDateTime.now())
@@ -39,24 +39,17 @@ public class GlobalExceptionHandler {
     }
 
 
-    @ExceptionHandler(IdNoteNotFoundException.class)
-    public ResponseEntity<ConfigError> handleIdNoteNotFound(IdNoteNotFoundException e, HttpServletRequest request) {
-        log.error("Id note non trouvé", e);
+    @ExceptionHandler(IdPatientNotFoundException.class)
+    public ResponseEntity<ConfigError> handleIdPatientNotFound(IdPatientNotFoundException e, HttpServletRequest request) {
+        log.error("Id patient non trouvé", e);
         return errorResponse(e, HttpStatus.NOT_FOUND, request);
     }
 
-    @ExceptionHandler(NoteNotFoundException.class)
-    public ResponseEntity<ConfigError> handleNoteNotFound(NoteNotFoundException e, HttpServletRequest request) {
-        log.error("Note non trouvée", e);
-        return errorResponse(e, HttpStatus.NOT_FOUND, request);
-    }
-
-    @ExceptionHandler(PatientNotFoundException.class)
+/*    @ExceptionHandler(PatientNotFoundException.class)
     public ResponseEntity<ConfigError> handlePatientNotFound(PatientNotFoundException e, HttpServletRequest request) {
         log.error("Patient non trouvé", e);
         return errorResponse(e, HttpStatus.NOT_FOUND, request);
-    }
-
+    }*/
 
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
     public ResponseEntity<ConfigError> handleTypeMismatch(MethodArgumentTypeMismatchException ex, HttpServletRequest request) {
@@ -67,6 +60,14 @@ public class GlobalExceptionHandler {
         log.error("Erreur de type argument : {}", message);
         return errorResponse(ex, HttpStatus.BAD_REQUEST, request);
     }
+
+
+    @ExceptionHandler(ServiceUnavailableException.class)
+    public ResponseEntity<ConfigError> handleServiceUnavailable(ServiceUnavailableException ex, HttpServletRequest request) {
+        log.error("Service indisponible, veuillez réessayer plus tard", ex);
+        return errorResponse(ex, HttpStatus.SERVICE_UNAVAILABLE, request);  // 503
+    }
+
 
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -81,5 +82,5 @@ public class GlobalExceptionHandler {
         return errorResponse(new Exception(errors.replace("\n", ", ")), HttpStatus.BAD_REQUEST, request);
     }
 
-
 }
+
