@@ -2,17 +2,21 @@ package com.openclassrooms.noteservice.service.serviceImpl;
 
 
 import com.openclassrooms.noteservice.dto.NoteDto;
+import com.openclassrooms.noteservice.dto.PatientDto;
 import com.openclassrooms.noteservice.entity.NoteEntity;
 import com.openclassrooms.noteservice.exception.IdNoteNotFoundException;
 import com.openclassrooms.noteservice.exception.NoteNotFoundException;
+import com.openclassrooms.noteservice.exception.PatientNotFoundException;
+import com.openclassrooms.noteservice.feignConfig.PatientFeign;
 import com.openclassrooms.noteservice.mapper.NoteMapper;
 import com.openclassrooms.noteservice.repository.NoteRepository;
 import com.openclassrooms.noteservice.service.NoteService;
+import feign.FeignException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
+
 import java.util.List;
 
 
@@ -25,11 +29,14 @@ public class NoteServiceImpl implements NoteService {
 
     private final NoteMapper noteMapper;
 
+    private final PatientFeign patientFeign;
 
 
-    public NoteServiceImpl(NoteRepository noteRepository, NoteMapper noteMapper) {
+
+    public NoteServiceImpl(NoteRepository noteRepository, NoteMapper noteMapper, PatientFeign patientFeign) {
         this.noteRepository = noteRepository;
         this.noteMapper = noteMapper;
+        this.patientFeign = patientFeign;
     }
 
 
@@ -72,9 +79,18 @@ public class NoteServiceImpl implements NoteService {
     public NoteDto createNote(NoteDto newNoteDto) {
 
         log.info("Création d'une nouvelle note");
+
         if (newNoteDto == null) {
             log.info("La note est null");
             throw new IllegalArgumentException("La note ne peut pas être null");
+        }
+
+        try {
+            patientFeign.getPatientById(newNoteDto.getPatientId());
+
+        } catch (FeignException.NotFound ex)  {
+            log.info("Patient non trouvé avec l'id : {}", newNoteDto.getPatientId());
+            throw new PatientNotFoundException("Patient avec l'id : " + newNoteDto.getPatientId() + " inexistant en bdd.");
         }
 
         NoteEntity noteEntity = noteMapper.mapToNoteEntity(newNoteDto);

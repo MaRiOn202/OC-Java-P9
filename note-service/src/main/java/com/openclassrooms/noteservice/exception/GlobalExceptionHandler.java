@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.time.LocalDateTime;
 
@@ -50,17 +51,34 @@ public class GlobalExceptionHandler {
         return errorResponse(e, HttpStatus.NOT_FOUND, request);
     }
 
+    @ExceptionHandler(PatientNotFoundException.class)
+    public ResponseEntity<ConfigError> handlePatientNotFound(PatientNotFoundException e, HttpServletRequest request) {
+        log.error("Patient non trouvé", e);
+        return errorResponse(e, HttpStatus.NOT_FOUND, request);
+    }
+
+
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    public ResponseEntity<ConfigError> handleTypeMismatch(MethodArgumentTypeMismatchException ex, HttpServletRequest request) {
+        String message = String.format("Le paramètre '%s' doit être du type %s. Or la valeur récupérée est : %s",
+                ex.getName(),
+                ex.getRequiredType() != null ? ex.getRequiredType().getSimpleName() : "Inconnu",
+                ex.getValue());
+        log.error("Erreur de type argument : {}", message);
+        return errorResponse(ex, HttpStatus.BAD_REQUEST, request);
+    }
+
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ConfigError> handleValidationException(MethodArgumentNotValidException e, HttpServletRequest request) {
         String errors = e.getBindingResult().getFieldErrors()
                 .stream()
-                .map(error -> error.getField() + " : " + error.getDefaultMessage())
-                .reduce((s1, s2) -> s1 + ", " + s2)
+                .map(error -> error.getField() + " => " + error.getDefaultMessage())
+                .reduce((s1, s2) -> s1 + "\n" + s2)
                 .orElse("Erreur de validation");
 
-        log.warn("Erreur de validation : {}", errors);
-        return errorResponse(new Exception(errors), HttpStatus.BAD_REQUEST, request);
+        log.warn("Erreur de validation : \n{}", errors);
+        return errorResponse(new Exception(errors.replace("\n", ", ")), HttpStatus.BAD_REQUEST, request);
     }
 
 

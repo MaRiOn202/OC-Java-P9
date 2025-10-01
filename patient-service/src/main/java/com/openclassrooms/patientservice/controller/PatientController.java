@@ -41,15 +41,9 @@ public class PatientController {
 
 
     @PostMapping("/createPatient")
-    public ResponseEntity<?> createPatient(@RequestBody @Valid PatientDto patientDto, BindingResult result) {
-
-        if (result.hasErrors()) {
-            return ResponseEntity.badRequest().body(result.getAllErrors());
-
-        }
+    public ResponseEntity<?> createPatient(@Valid @RequestBody PatientDto patientDto) {
 
         PatientDto patientDtoSaved = patientService.createPatient(patientDto);
-
         return ResponseEntity.status(HttpStatus.CREATED).body(patientDtoSaved);
     }
 

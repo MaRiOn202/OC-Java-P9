@@ -5,6 +5,7 @@ import com.openclassrooms.assessmentservice.dto.NoteDto;
 import com.openclassrooms.assessmentservice.dto.PatientDto;
 import com.openclassrooms.assessmentservice.dto.RisksCat;
 import com.openclassrooms.assessmentservice.exception.IdPatientNotFoundException;
+import com.openclassrooms.assessmentservice.exception.ServiceUnavailableException;
 import com.openclassrooms.assessmentservice.feignConfig.NoteFeign;
 import com.openclassrooms.assessmentservice.feignConfig.PatientFeign;
 import com.openclassrooms.assessmentservice.service.AssessmentRisksService;
@@ -64,7 +65,6 @@ public class AssessmentRisksServiceImpl implements AssessmentRisksService {
                 }
             }
         }
-
         return nb;
     }
 
@@ -82,7 +82,13 @@ public class AssessmentRisksServiceImpl implements AssessmentRisksService {
             noteDtoList = noteFeign.getNoteByPatientId(patientId);
         } catch (FeignException.NotFound ex)  {
             log.info("Patient non trouvé avec l'id : {}", patientId);
-            throw new IdPatientNotFoundException(String.valueOf(patientId));
+            throw new IdPatientNotFoundException("Id patient non trouvé : " + patientId);
+        } catch (FeignException ex2) {
+            if (ex2.getCause() instanceof java.net.ConnectException) {
+                log.error("Les services Patient-service ou note-service sont indisponibles", ex2);
+                throw new ServiceUnavailableException("Les services Patient-service ou note-service sont indisponibles , veuillez réessayer plus tard");
+            }
+            throw ex2;   // for other exceptions Feign
         }
 
         if (noteDtoList == null) {
