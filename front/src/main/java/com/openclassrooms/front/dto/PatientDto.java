@@ -1,4 +1,5 @@
-package com.openclassrooms.assessmentservice.dto;
+package com.openclassrooms.front.dto;
+
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotBlank;
@@ -25,10 +26,10 @@ public class PatientDto {
     @PastOrPresent(message = "La date de naissance ne peut pas être dans le futur")
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate dateNaissance;
-    // pattern ? "M" & "F" ?
     @NotBlank(message = "Le genre du patient est obligatoire")
     private String genre;
     private String adresse;
     private String telephone;
 
 }
+

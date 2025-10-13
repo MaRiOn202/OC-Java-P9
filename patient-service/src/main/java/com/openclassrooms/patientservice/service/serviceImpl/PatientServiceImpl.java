@@ -84,13 +84,17 @@ public class PatientServiceImpl implements PatientService {
         }
 
         PatientEntity patientEntity = patientMapper.mapToPatientEntity(newPatientDto);
-        log.info("Avant sauvegarde : Nom= {}, Prénom= {}, Date de naissance= {}, Genre= {}", patientEntity.getNom(),
-                patientEntity.getPrenom(), patientEntity.getDateNaissance(),patientEntity.getGenre());
+        log.info("Avant sauvegarde : Nom= {}, Prénom= {}, Date de naissance= {}, Genre= {}, Adresse= {}, Téléphone={}", patientEntity.getNom(),
+                patientEntity.getPrenom(), patientEntity.getDateNaissance(),patientEntity.getGenre(), patientEntity.getAdresse(),
+                patientEntity.getTelephone());
 
         patientEntity = patientRepository.save(patientEntity);
 
         PatientDto patientDtoSaved = patientMapper.mapToPatientDto(patientEntity);
         log.info("Le nouveau patient a bien été enregistré avec l'id : {}", patientDtoSaved.getId());
+        log.info("Après sauvegarde : Nom= {}, Prénom= {}, Date de naissance= {}, Genre= {}, Adresse= {}, Téléphone={}", patientDtoSaved.getNom(),
+                patientDtoSaved.getPrenom(), patientDtoSaved.getDateNaissance(),patientDtoSaved.getGenre(), patientDtoSaved.getAdresse(),
+                patientDtoSaved.getTelephone());
 
         return patientDtoSaved;
     }

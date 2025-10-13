@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="fr" >
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MediLabo - Liste des patients</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+
+
+<body>
+<!-- 1 -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
+    <div class="container">
+
+        <a class="navbar-brand mx-auto" th:href="@{/patients}">
+            <img th:src="@{/logoMediLabo.png}" alt="logo" width="70" height="40" class="d-inline-block align-top"/>
+            &nbsp;MédiLabo Solutions
+
+        </a>
+
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+
+                <!--/profile patient -->
+ <!--               <li class="nav-item">
+                    <a class="nav-link" th:href="@{/profile}">Profil patient</a>
+                </li>-->
+
+                <!-- ajouter nouveau patient  -->
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/add}">Ajouter patient</a>
+                </li>
+                <!-- /logout -->
+                <li class="nav-item">
+                    <a class="nav-link text-danger" th:href="@{/logout}">Se déconnecter</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+<!-- Gestion erreus + success -->
+<div th:if="${param.created}">
+    <div class="alert alert-info text-center">Le patient a été créé avec succès !</div>
+</div>
+
+<div th:if="${param.updated}">
+    <div class="alert alert-info text-center">Le patient a été modifié avec succès !</div>
+</div>
+
+<div th:if="${deleted}" class="alert alert-success text-center" role="alert">
+    <span th:text="${deleted}"></span>
+</div>
+
+
+<div th:if="${param.error}">
+    <div class="alert alert-danger text-center">Erreur survenue lors de l'opération.  </div>
+</div>
+
+
+<!-- container princ  -->
+<div class="d-flex justify-content-center align-items-start" style="min-height: 100vh; padding: 2rem;">
+
+    <div class="card shadow-sm p-4" style="width: 95%; max-width: 1200px; height: auto;">
+
+        <h4 class="text-center mb-4 fw-bold">Liste des patients suivis :</h4>
+
+
+        <!-- Liste de patients -->
+        <div class="mb-4">
+
+            <!-- Tableau des patients -->
+            <table class="table table-striped table-hover table-bordered">
+                <thead class="table-dark text-center">
+                <tr>
+                    <th>Nom</th>
+                    <th>Prénom</th>
+                    <th>Date de naissance</th>
+                    <th>Genre</th>
+                    <th>Adresse</th>
+                    <th>Téléphone</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="patient : ${patients}">
+                    <td th:text="${patient.nom}"></td>
+                    <td th:text="${patient.prenom}"></td>
+                    <td th:text="${#temporals.format(patient.dateNaissance, 'dd/MM/yyyy')}"></td>
+                    <td th:text="${patient.genre}"></td>
+                    <td th:text="${patient.adresse}"></td>
+                    <td th:text="${patient.telephone}"></td>
+                    <td class="text-center">
+                        <a th:href="@{'/patient/' + ${patient.id}}" class="btn btn-info btn-sm">Voir</a>
+                        <a th:href="@{'/patient/edit/' + ${patient.id}}" class="btn btn-warning btn-sm">Modifier</a>
+                        <a th:href="@{'/patient/delete/' + ${patient.id}}" class="btn btn-danger btn-sm">Supprimer</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <!-- Pagination -->
+<!--            <nav>
+                <ul class="pagination justify-content-center">
+                    <li class="page-item" th:if="${currentPage > 0 }">
+                        <a class="page-link" th:href="@{/transfert(page=${currentPage - 1}, size=5)}">Précédent</a>
+                    </li>
+
+                    <li class="page-item" th:if="${currentPage + 1 < totalPages }">
+                        <a class="page-link" th:href="@{/transfert(page=${currentPage + 1}, size=5)}">Suivant</a>
+                    </li>
+                </ul>
+            </nav>-->
+        </div>
+
+
+    </div>
+
+</div>
+
+</body>
+
+<footer class="bg-dark text-white text-center py-3 mt-4">
+    <p>&copy; 2025 MediLabo</p>
+</footer>
+
+
+</html>
